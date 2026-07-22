@@ -1,4 +1,5 @@
 import { products } from "../data/products.js";
+import { cart } from "../data/cart.js"
 
 const productsGrid = document.querySelector(".products-grid");
 
@@ -50,7 +51,6 @@ products.forEach(product => {
         productQuantityOption.textContent = number;
         productQuantityOption.value = number;
 
-
         if (number === 1) {
             productQuantityOption.selected = true;
         }
@@ -64,12 +64,35 @@ products.forEach(product => {
 
     const addedToCartContainer = document.createElement("div");
     addedToCartContainer.classList.add("added-to-cart");
-    addedToCartContainer.innerHTML = `<img src="images/icons/checkmark.png" alt="">
+    addedToCartContainer.innerHTML = `<img src="/images/icons/checkmark.png" alt="">
 Added`
 
     const addToCartButton = document.createElement("button");
     addToCartButton.classList.add("add-to-cart-button", "button-primary");
+    addToCartButton.setAttribute('data-product-id', product.id);
     addToCartButton.textContent='Add to Cart'
+    addToCartButton.addEventListener('click', () => {
+        let matchingItem = undefined;
+
+        cart.forEach(item => {
+            if (product.id === item.id){
+                matchingItem = item;
+            }
+        })
+
+        if (matchingItem) {
+            matchingItem.quantity+=Number(productQuantitySelect.value);
+        } else {
+            cart.push(
+                {
+                    id: product.id,
+                    quantity: Number(productQuantitySelect.value)
+                }
+            )
+        }
+
+        console.log(cart)
+    })
 
     productContainer.append(
         productImageContainer,
