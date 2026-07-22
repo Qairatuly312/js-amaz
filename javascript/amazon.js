@@ -1,10 +1,10 @@
-import { products } from "../data/products.js";
-import { cart } from "../data/cart.js"
+import {products} from "../data/products.js";
+import {cart} from "../data/cart.js"
 
 const productsGrid = document.querySelector(".products-grid");
+const cartQuantity = document.querySelector(".cart-quantity");
 
-
-const productQuantity = [1,2,3,4,5,6,7,8,9,10]
+const productQuantity = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 products.forEach(product => {
     const productContainer = document.createElement("div");
@@ -28,7 +28,7 @@ products.forEach(product => {
 
     const productRatingImage = document.createElement("img");
     productRatingImage.classList.add("product-rating-stars")
-    productRatingImage.src = `images/ratings/rating-${product.rating.stars*10}.png`;
+    productRatingImage.src = `images/ratings/rating-${product.rating.stars * 10}.png`;
 
     const productRatingCount = document.createElement("div");
     productRatingCount.classList.add("product-rating-count", "link-primary");
@@ -41,7 +41,7 @@ products.forEach(product => {
     productPrice.classList.add("product-price");
     productPrice.textContent = `$${(product.priceCents / 100).toFixed(2)}`;
 
-    const productQuantityContainer =document.createElement("div");
+    const productQuantityContainer = document.createElement("div");
     productQuantityContainer.classList.add("product-quantity-container");
 
     const productQuantitySelect = document.createElement("select");
@@ -70,18 +70,18 @@ Added`
     const addToCartButton = document.createElement("button");
     addToCartButton.classList.add("add-to-cart-button", "button-primary");
     addToCartButton.setAttribute('data-product-id', product.id);
-    addToCartButton.textContent='Add to Cart'
+    addToCartButton.textContent = 'Add to Cart'
     addToCartButton.addEventListener('click', () => {
         let matchingItem = undefined;
 
         cart.forEach(item => {
-            if (product.id === item.id){
+            if (product.id === item.id) {
                 matchingItem = item;
             }
         })
 
         if (matchingItem) {
-            matchingItem.quantity+=Number(productQuantitySelect.value);
+            matchingItem.quantity += Number(productQuantitySelect.value);
         } else {
             cart.push(
                 {
@@ -91,7 +91,13 @@ Added`
             )
         }
 
-        console.log(cart)
+        let totalQuantity = 0;
+
+        cart.forEach(item => {
+            totalQuantity += item.quantity;
+        });
+
+        cartQuantity.textContent = totalQuantity;
     })
 
     productContainer.append(
